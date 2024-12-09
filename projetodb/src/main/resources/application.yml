@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: projetodb
+  datasource:
+    url: jdbc:postgresql://localhost:5432/projetodb/voluntariado
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.format_sql: true
