@@ -3,7 +3,6 @@ package com.ptojetodb.projetodb.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -23,14 +22,15 @@ import lombok.Data;
 
 @Entity
 @Table(name = "interações")
-@Data
+
 @EntityListeners(AuditingEntityListener.class)
+@Data
 public class Atividade {
 
     @Id
     @Column(name = "id_atividade")
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id_atividade;
+    private Long id_atividade;
 
     @NotBlank(message = "Campo Obrigatório")
     private String nomeAtividade;
@@ -69,4 +69,11 @@ public class Atividade {
     @Column(name = "data_atualizacao")
     private LocalDateTime dataAtualizacao;
 
+    // @OneToOne
+    // @JoinColumn(name = "id_usuario_criador")
+    // private Usuario usuarioCriador;
+
+    // @OneToOne
+    // @JoinColumn(name = "id_usuario_convidado")
+    // private Usuario usuarioConvidado;
 }
