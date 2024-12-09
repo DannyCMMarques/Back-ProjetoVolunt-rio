@@ -14,6 +14,7 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+    
 
  
     @PostMapping("/idoso")
