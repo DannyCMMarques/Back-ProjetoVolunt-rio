@@ -18,8 +18,9 @@ public class AtividadeValidator {
 
     public void validar(Atividade atividade) {
         if (existeAtividadeAgendada(atividade)) {
-            throw new RegistroDuplicadoException("Você já possui atividade agendada nesse horário")
+            throw new RegistroDuplicadoException("Você já possui atividade agendada nesse horário");
         }
+
          if(possoEditar(atividade) || possoExcluir(atividade) == false){
               throw new OperacaoNaoPermitidaException("Você não pode editar essa atividade");
          }
