@@ -16,6 +16,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -69,11 +71,11 @@ public class Atividade {
     @Column(name = "data_atualizacao")
     private LocalDateTime dataAtualizacao;
 
-    // @OneToOne
-    // @JoinColumn(name = "id_usuario_criador")
-    // private Usuario usuarioCriador;
+    @OneToOne
+    @JoinColumn(name = "id_usuario_criador")
+    private Usuario usuarioCriador;
 
-    // @OneToOne
-    // @JoinColumn(name = "id_usuario_convidado")
-    // private Usuario usuarioConvidado;
+    @OneToOne
+    @JoinColumn(name = "id_usuario_convidado")
+    private Usuario usuarioConvidado;
 }
