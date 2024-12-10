@@ -62,7 +62,7 @@ public class AtividadeService {
     }
 
     public List<Atividade> exibirAtividadesConfirmadas(long id) {
-        return repository.filterByAtividadeConfirmada(id);
+        return repository.filterByAtividadeConfirmacao(id);
     }
 
     public List<Atividade> exibirAtividadesFinalizadas(long id) {
