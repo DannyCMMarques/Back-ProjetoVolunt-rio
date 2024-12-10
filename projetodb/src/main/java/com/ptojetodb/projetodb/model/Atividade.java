@@ -31,36 +31,28 @@ public class Atividade {
 
     @Id
     @Column(name = "id_atividade")
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_atividade;
 
-    @NotBlank(message = "Campo Obrigatório")
     private String nomeAtividade;
 
     @NotBlank
     @Column(name = "descricao_atividade")
     private String descricaoAtividade;
 
-    @NotBlank(message = "Campo Obrigatório")
-    private LocalDate data_Encontro;
+    private LocalDate dataEncontro;
 
-    @NotBlank(message = "Campo Obrigatório")
     private LocalTime horario;
 
-    @NotBlank(message = "Campo Obrigatório")
     @Enumerated(EnumType.STRING)
     private TipoEncontro tipoEncontro;
 
-    @NotBlank(message = "Campo Obrigatório")
     private String endereco;
 
-    @NotBlank(message = "Campo Obrigatório")
-    private Boolean confirmacao;
+    private Boolean confirmada;
 
-    @NotBlank(message = "Campo Obrigatório")
-    private Boolean rejeitado;
+    private Boolean rejeitada;
 
-    @NotBlank(message = "Campo Obrigatório")
     private Boolean finalizada;
 
     @CreatedDate

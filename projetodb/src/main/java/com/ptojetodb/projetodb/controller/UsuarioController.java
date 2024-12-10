@@ -1,7 +1,8 @@
 package com.ptojetodb.projetodb.controller;
 
+import com.ptojetodb.projetodb.model.TipoUsuario;
 import com.ptojetodb.projetodb.model.Usuario;
-import com.ptojetodb.projetodb.repository.UsuarioRepository;
+import com.ptojetodb.projetodb.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,33 +14,33 @@ import java.util.List;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
-    
+    private UsuarioService usuarioService;
 
- 
+
     @PostMapping("/idoso")
-    public ResponseEntity<Usuario> cadastrarIdoso(@RequestBody Usuario idoso) {
-        if (idoso.getGrupo() == null || !idoso.getGrupo().equalsIgnoreCase("idoso")) {
-            idoso.setGrupo("idoso");
+    public ResponseEntity<Usuario> cadastrarIdoso(@RequestBody Usuario usuario) {
+        if (usuario.getTipo() != TipoUsuario.IDOSO) {
+            return ResponseEntity.badRequest().body(null);
         }
-        Usuario novoIdoso = usuarioRepository.save(idoso);
-        return ResponseEntity.ok(novoIdoso);
+        Usuario novoUsuario = usuarioService.salvarUsuario(usuario);
+        return ResponseEntity.ok(novoUsuario);
     }
 
-  
+    
     @PostMapping("/voluntario")
-    public ResponseEntity<Usuario> cadastrarVoluntario(@RequestBody Usuario voluntario) {
-        if (voluntario.getGrupo() == null || !voluntario.getGrupo().equalsIgnoreCase("voluntario")) {
-            voluntario.setGrupo("voluntario");
+    public ResponseEntity<Usuario> cadastrarVoluntario(@RequestBody Usuario usuario) {
+        if (usuario.getTipo() != TipoUsuario.VOLUNTARIO) {
+            return ResponseEntity.badRequest().body(null);
         }
-        Usuario novoVoluntario = usuarioRepository.save(voluntario);
-        return ResponseEntity.ok(novoVoluntario);
+        Usuario novoUsuario = usuarioService.salvarUsuario(usuario);
+        return ResponseEntity.ok(novoUsuario);
     }
 
 
     @GetMapping
-    public List<Usuario> listarUsuarios() {
-        return usuarioRepository.findAll();
+    public ResponseEntity<List<Usuario>> listarUsuarios() {
+        return ResponseEntity.ok(usuarioService.listarUsuarios());
     }
 }
+
 

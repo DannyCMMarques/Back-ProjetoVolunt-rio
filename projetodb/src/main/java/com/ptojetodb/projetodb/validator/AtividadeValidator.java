@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 public class AtividadeValidator {
 
     private final AtividadeRepository repository;
-    private final AtividadeValidator atividadeValidator;
 
     public void validar(Atividade atividade) {
         if (existeAtividadeAgendada(atividade)) {
@@ -26,11 +25,11 @@ public class AtividadeValidator {
     }
 
     private boolean existeAtividadeAgendada(Atividade atividade) {
-        return repository.existsByData_EncontroAndHorario(atividade);
+        return repository.existsByDataEncontroAndHorario(atividade.getDataEncontro(), atividade.getHorario());
     }
 
     private boolean possoEditar(Atividade atividade) {
-        if (atividade.getConfirmacao() & atividade.getRejeitado() & atividade.getFinalizada() != true) {
+        if (atividade.getConfirmada() & atividade.getRejeitada() & atividade.getFinalizada() != true) {
             return true;
         }
         return false;

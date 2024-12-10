@@ -1,5 +1,7 @@
 package com.ptojetodb.projetodb.repository;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +12,7 @@ import com.ptojetodb.projetodb.model.Atividade;
 
 public interface AtividadeRepository extends JpaRepository<Atividade, Long> {
 
-    boolean existsByData_EncontroAndHorario(Atividade atividade);
+    boolean existsByDataEncontroAndHorario(LocalDate dataEncontro, LocalTime horario);
 
     @Query("SELECT a FROM Atividade a WHERE a.usuarioCriador.id = :id OR a.usuarioConvidado.id = :id")
     List<Atividade> filterByUsuarioCriadorOrUsuarioConvidado(@Param("id") Long id);
