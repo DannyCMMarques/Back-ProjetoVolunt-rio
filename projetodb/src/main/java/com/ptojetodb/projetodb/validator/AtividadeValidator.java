@@ -26,8 +26,8 @@ public class AtividadeValidator {
          }
     }
 
-    private boolean existeAtividadeAgendada(Atividade atividade) {
-        return repository.existsByData_EncontroAndHorario(atividade);
+     private boolean existeAtividadeAgendada(Atividade atividade) {
+         return repository.existsByDataEncontroAndHorario(atividade.getDataEncontro(),atividade.getHorario());
     }
 
     private boolean possoEditar(Atividade atividade) {
