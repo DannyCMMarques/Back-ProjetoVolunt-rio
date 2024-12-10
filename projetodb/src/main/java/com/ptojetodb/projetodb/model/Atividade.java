@@ -16,6 +16,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -29,7 +31,7 @@ public class Atividade {
 
     @Id
     @Column(name = "id_atividade")
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_atividade;
 
     private String nomeAtividade;
@@ -38,7 +40,7 @@ public class Atividade {
     @Column(name = "descricao_atividade")
     private String descricaoAtividade;
 
-    private LocalDate data_Encontro;
+    private LocalDate dataEncontro;
 
     private LocalTime horario;
 
@@ -47,9 +49,9 @@ public class Atividade {
 
     private String endereco;
 
-    private Boolean confirmacao;
+    private Boolean confirmada;
 
-    private Boolean rejeitado;
+    private Boolean rejeitada;
 
     private Boolean finalizada;
 
@@ -61,11 +63,11 @@ public class Atividade {
     @Column(name = "data_atualizacao")
     private LocalDateTime dataAtualizacao;
 
-    // @OneToOne
-    // @JoinColumn(name = "id_usuario_criador")
-    // private Usuario usuarioCriador;
+    @OneToOne
+    @JoinColumn(name = "id_usuario_criador")
+    private Usuario usuarioCriador;
 
-    // @OneToOne
-    // @JoinColumn(name = "id_usuario_convidado")
-    // private Usuario usuarioConvidado;
+    @OneToOne
+    @JoinColumn(name = "id_usuario_convidado")
+    private Usuario usuarioConvidado;
 }
