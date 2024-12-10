@@ -14,24 +14,23 @@ import lombok.RequiredArgsConstructor;
 public class AtividadeValidator {
 
     private final AtividadeRepository repository;
-    private final AtividadeValidator atividadeValidator;
 
     public void validar(Atividade atividade) {
         if (existeAtividadeAgendada(atividade)) {
             throw new RegistroDuplicadoException("Você já possui atividade agendada nesse horário");
         }
 
-         if(possoEditar(atividade) || possoExcluir(atividade) == false){
-              throw new OperacaoNaoPermitidaException("Você não pode editar essa atividade");
-         }
+        if (possoEditar(atividade) || possoExcluir(atividade) == false) {
+            throw new OperacaoNaoPermitidaException("Você não pode editar essa atividade");
+        }
     }
 
     private boolean existeAtividadeAgendada(Atividade atividade) {
-        return repository.existsByData_EncontroAndHorario(atividade);
+        return repository.existsByDataEncontroAndHorario(atividade.getDataEncontro(), atividade.getHorario());
     }
 
     private boolean possoEditar(Atividade atividade) {
-        if (atividade.getConfirmacao() & atividade.getRejeitado() & atividade.getFinalizada() != true) {
+        if (atividade.getConfirmada() & atividade.getRejeitada() & atividade.getFinalizada() != true) {
             return true;
         }
         return false;
