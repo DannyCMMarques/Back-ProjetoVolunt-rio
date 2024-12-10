@@ -1,10 +1,10 @@
 package com.ptojetodb.projetodb.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.ptojetodb.projetodb.exceptions.AtividadeNotFoundException;
 import com.ptojetodb.projetodb.model.Atividade;
 import com.ptojetodb.projetodb.repository.AtividadeRepository;
 import com.ptojetodb.projetodb.validator.AtividadeValidator;
@@ -28,14 +28,16 @@ public class AtividadeService {
 
     }
 
-    public Optional<Atividade> obterAtividadeId(Long id) {
-        return repository.findById(id);
+    public Atividade obterAtividadeId(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new AtividadeNotFoundException("Atividade não encontrada para o ID: " + id));
     }
 
-    public void deletarAtividade(Atividade atividade) {
-        atividadeValidator.validar(atividade);
-        atividadeValidator.validar(atividade);
+    public void deletarAtividade(long id) {
+        Atividade atividade = repository.findById(id)
+                .orElseThrow(() -> new AtividadeNotFoundException("Atividade não encontrada para o ID: " + id));
 
+        atividadeValidator.validar(atividade);
         repository.delete(atividade);
     }
 
