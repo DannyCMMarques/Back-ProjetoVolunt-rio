@@ -49,9 +49,9 @@ public class Atividade {
 
     private String endereco;
 
-    private Boolean confirmacao;
+    private Boolean confirmada;
 
-    private Boolean rejeitado;
+    private Boolean rejeitada;
 
     private Boolean finalizada;
 
@@ -63,9 +63,9 @@ public class Atividade {
     @Column(name = "data_atualizacao")
     private LocalDateTime dataAtualizacao;
 
-     @OneToOne
-     @JoinColumn(name = "id_usuario_criador")
-     private Usuario usuarioCriador;
+    @OneToOne
+    @JoinColumn(name = "id_usuario_criador")
+    private Usuario usuarioCriador;
 
     @OneToOne
     @JoinColumn(name = "id_usuario_convidado")
