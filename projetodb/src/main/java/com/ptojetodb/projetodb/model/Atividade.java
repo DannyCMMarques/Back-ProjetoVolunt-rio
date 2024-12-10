@@ -29,8 +29,8 @@ public class Atividade {
 
     @Id
     @Column(name = "id_atividade")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id_atividade;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotBlank(message = "Campo Obrigatório")
     private String nomeAtividade;
