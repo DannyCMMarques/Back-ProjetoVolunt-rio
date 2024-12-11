@@ -30,6 +30,8 @@ public class UsuarioService {
     public List<Usuario> listarUsuarios() {
         return usuarioRepository.findAll();
     }
+
+    public List<Usuario> listarIdosos(){
+        return usuarioRepository.filterByTipoUsuario(TipoUsuario.IDOSO);
+    }
 }
-
-

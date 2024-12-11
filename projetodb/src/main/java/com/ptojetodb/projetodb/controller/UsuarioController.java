@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("usuarios")
+@RequestMapping("/usuarios")
 public class UsuarioController {
 
     
@@ -36,5 +36,3 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.listarUsuarios());
     }
 }
-
-
