@@ -25,7 +25,7 @@ public interface AtividadeRepository extends JpaRepository<Atividade, Long> {
     List<Atividade> filterByAtividadeRejeitada(@Param("id") Long id);
 
     @Query("SELECT a FROM Atividade a WHERE (a.usuarioCriador.id = :id OR a.usuarioConvidado.id = :id) AND a.confirmada = true ")
-    List<Atividade> filterByAtividadeConfirmada(@Param("id") Long id);
+    List<Atividade> filterByAtividadeconfirmada(@Param("id") Long id);
 
     @Query("SELECT a FROM Atividade a WHERE (a.usuarioCriador.id = :id OR a.usuarioConvidado.id = :id) AND a.finalizada = true ")
     List<Atividade> filterByAtividadeFinalizada(@Param("id") Long id);
