@@ -5,6 +5,8 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 @Entity
 @Data
 public class Usuario {
@@ -12,6 +14,7 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUsuario;
 
+    //@CPF
     private String cpf;
     private String nome;
     private LocalDate dataNascimento; 

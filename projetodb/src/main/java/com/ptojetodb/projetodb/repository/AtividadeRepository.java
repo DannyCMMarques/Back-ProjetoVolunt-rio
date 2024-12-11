@@ -12,6 +12,7 @@ import com.ptojetodb.projetodb.model.Atividade;
 
 public interface AtividadeRepository extends JpaRepository<Atividade, Long> {
 
+    // para usar para validação
     boolean existsByDataEncontroAndHorario(LocalDate dataEncontro, LocalTime horario);
 
     @Query("SELECT a FROM Atividade a WHERE a.usuarioCriador.id = :id OR a.usuarioConvidado.id = :id")

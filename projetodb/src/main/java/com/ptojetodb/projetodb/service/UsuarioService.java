@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -27,9 +28,18 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    public List<Usuario> listarUsuarios() {
+    public List<Usuario> listarTodosUsuarios() {
         return usuarioRepository.findAll();
     }
+
+    public List<Usuario> listarUsuariosPorTipo(TipoUsuario tipo){
+        return usuarioRepository.filterByTipoUsuario(tipo);
+    }
+
+    public Usuario exibirPorID(Long id) {
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado para o ID: " + id));
+    }
+    
+
 }
-
-
