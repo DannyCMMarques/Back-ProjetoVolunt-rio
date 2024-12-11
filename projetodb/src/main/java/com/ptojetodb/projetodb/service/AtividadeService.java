@@ -9,6 +9,7 @@ import com.ptojetodb.projetodb.model.Atividade;
 import com.ptojetodb.projetodb.repository.AtividadeRepository;
 import com.ptojetodb.projetodb.validator.AtividadeValidator;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -18,6 +19,7 @@ public class AtividadeService {
     private final AtividadeRepository repository;
     private final AtividadeValidator atividadeValidator;
 
+    @Transactional
     public Atividade salvarAtividade(Atividade atividade) {
         atividadeValidator.validar(atividade);
         // TODO: é necessário ainda construir essa parte para que meu usuario criador
@@ -33,10 +35,10 @@ public class AtividadeService {
                 .orElseThrow(() -> new AtividadeNotFoundException("Atividade não encontrada para o ID: " + id));
     }
 
+    @Transactional
     public void deletarAtividade(long id) {
         Atividade atividade = repository.findById(id)
                 .orElseThrow(() -> new AtividadeNotFoundException("Atividade não encontrada para o ID: " + id));
-
         atividadeValidator.validar(atividade);
         repository.delete(atividade);
     }
@@ -45,6 +47,7 @@ public class AtividadeService {
         return repository.filterByUsuarioCriadorOrUsuarioConvidado(id);
     }
 
+    @Transactional
     public void atualizarAtividade(Atividade atividade) {
 
         if (atividade.getId_atividade() == null) {

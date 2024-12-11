@@ -1,19 +1,21 @@
 package com.ptojetodb.projetodb.controller;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ptojetodb.projetodb.model.Atividade;
 import com.ptojetodb.projetodb.service.AtividadeService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +48,52 @@ public class AtividadeController implements GenericController {
         service.deletarAtividade(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Void> atualizar(
+            @PathVariable("id") long id, @RequestBody @Valid Atividade atividade) {
+        Atividade atividadeSelecionada = service.obterAtividadeId(id);
+
+        atividade.setDataEncontro(atividade.getDataEncontro());
+        atividade.setDescricaoAtividade(atividade.getDescricaoAtividade());
+        atividade.setEndereco(atividade.getEndereco());
+        atividade.setUsuarioConvidado(atividade.getUsuarioConvidado());
+        atividade.setNomeAtividade(atividade.getNomeAtividade());
+        // atividade.getHorario(atividade.getHorario());
+        service.atualizarAtividade(atividade);
+        return ResponseEntity.noContent().build();
+    }
+
+    // TODO: Depois trocar por questao de privacidade do usuario e refatorar
+    @GetMapping("minhas-atividades/{id}")
+    public ResponseEntity<List<Atividade>> exibirMinhasAtividades(@PathVariable("id") long id) {
+        List<Atividade> atividade = service.exibirMinhasAtividades(id);
+        return ResponseEntity.ok(atividade);
+    }
+
+    @GetMapping("pendentes/{id}")
+    public ResponseEntity<List<Atividade>> exibirAtividadesPendentes(@PathVariable("id") long id) {
+        List<Atividade> atividade = service.exibirAtividadesPendentes(id);
+        return ResponseEntity.ok(atividade);
+    }
+
+    @GetMapping("rejeitadas/{id}")
+    public ResponseEntity<List<Atividade>> exibirAtividadesRejeitadas(@PathVariable("id") long id) {
+        List<Atividade> atividade = service.exibirAtividadesRejeitadas(id);
+        return ResponseEntity.ok(atividade);
+    }
+
+    @GetMapping("confirmadas/{id}")
+    public ResponseEntity<List<Atividade>> exibirAtividadesConfirmadas(@PathVariable("id") long id) {
+        List<Atividade> atividade = service.exibirAtividadesConfirmadas(id);
+        return ResponseEntity.ok(atividade);
+    }
+
+    @GetMapping("finalizadas/{id}")
+    public ResponseEntity<List<Atividade>> exibirAtividadesFinalizadas(@PathVariable("id") long id) {
+        List<Atividade> atividade = service.exibirAtividadesFinalizadas(id);
+        return ResponseEntity.ok(atividade);
     }
 
 }

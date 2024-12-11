@@ -3,7 +3,6 @@ package com.ptojetodb.projetodb.validator;
 import org.springframework.stereotype.Component;
 
 import com.ptojetodb.projetodb.exceptions.OperacaoNaoPermitidaException;
-import com.ptojetodb.projetodb.exceptions.RegistroDuplicadoException;
 import com.ptojetodb.projetodb.model.Atividade;
 import com.ptojetodb.projetodb.repository.AtividadeRepository;
 
@@ -16,11 +15,12 @@ public class AtividadeValidator {
     private final AtividadeRepository repository;
 
     public void validar(Atividade atividade) {
-        if (existeAtividadeAgendada(atividade)) {
-            throw new RegistroDuplicadoException("Você já possui atividade agendada nesse horário");
-        }
+        // if (existeAtividadeAgendada(atividade)) {
+        // throw new RegistroDuplicadoException("Você já possui atividade agendada nesse
+        // horário");
+        // }
         if (possoEditar(atividade) || possoExcluir(atividade) == false) {
-            throw new OperacaoNaoPermitidaException("Você não pode editar essa atividade");
+            throw new OperacaoNaoPermitidaException("Você não pode editar ou excluir essa atividade");
         }
     }
 

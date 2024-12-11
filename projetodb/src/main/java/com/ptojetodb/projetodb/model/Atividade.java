@@ -19,7 +19,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Entity
@@ -36,7 +35,7 @@ public class Atividade {
 
     private String nomeAtividade;
 
-    @NotBlank
+    // @NotBlank
     @Column(name = "descricao_atividade")
     private String descricaoAtividade;
 
