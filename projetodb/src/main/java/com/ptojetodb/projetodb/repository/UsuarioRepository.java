@@ -15,5 +15,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     List<Usuario> filterByTipoUsuario(@Param("tipo") TipoUsuario tipo);
 
     public Optional<Usuario> findByEmail(String email);
+
+    public boolean existsByCpf(String cpf);
+
+    public boolean existsByEmail(String email);
+
 }
 

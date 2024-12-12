@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import com.ptojetodb.projetodb.model.Atividade;
 import com.ptojetodb.projetodb.model.TipoUsuario;
 import com.ptojetodb.projetodb.model.Usuario;
 import com.ptojetodb.projetodb.service.UsuarioService;
+import com.ptojetodb.projetodb.validator.UsuarioValidator;
 
 import lombok.RequiredArgsConstructor;
 
@@ -41,7 +43,7 @@ public class UsuarioController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<UsuarioDTO>> listarUsuarios(@RequestParam TipoUsuario tipo) {
+    public ResponseEntity<List<UsuarioDTO>> listarPorTipo(@RequestParam TipoUsuario tipo) {
         List<Usuario> usuarios = usuarioService.listarUsuariosPorTipo(tipo);
         
         List<UsuarioDTO> usuariosDto = usuarios.stream()
@@ -56,4 +58,18 @@ public class UsuarioController {
     Usuario usuario = usuarioService.exibirPorID(id);
     return ResponseEntity.ok(usuario);
     }
+
+    @GetMapping("/todos")
+    public ResponseEntity<List<Usuario>> listarTodosUsuarios() {
+        List<Usuario> usuarios = usuarioService.listarTodosUsuarios();
+        return ResponseEntity.ok(usuarios);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarUsuario(@PathVariable Long id) {
+    usuarioService.deletarUsuario(id);
+    return ResponseEntity.noContent().build();
+}
+
+
 }
