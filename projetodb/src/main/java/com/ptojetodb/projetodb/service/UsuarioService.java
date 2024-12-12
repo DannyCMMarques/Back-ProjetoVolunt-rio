@@ -3,6 +3,8 @@ package com.ptojetodb.projetodb.service;
 import com.ptojetodb.projetodb.model.TipoUsuario;
 import com.ptojetodb.projetodb.model.Usuario;
 import com.ptojetodb.projetodb.repository.UsuarioRepository;
+import com.ptojetodb.projetodb.validator.UsuarioValidator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +17,12 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private UsuarioValidator usuarioValidator;
+
     public Usuario salvarUsuario(Usuario usuario) {
+        usuarioValidator.validarUsuario(usuario);
+
         if (usuario.getTipo() == TipoUsuario.VOLUNTARIO) {
             if (usuario.getHabilidade() == null || usuario.getHabilidade().isEmpty()) {
                 throw new IllegalArgumentException("Voluntários devem ter uma habilidade.");
@@ -41,5 +48,11 @@ public class UsuarioService {
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado para o ID: " + id));
     }
     
-
+    public void deletarUsuario(Long id) {
+        if (!usuarioRepository.existsById(id)) {
+            throw new IllegalArgumentException("Usuário não encontrado para o ID: " + id);
+        }
+        usuarioRepository.deleteById(id);
+    }
+    
 }
