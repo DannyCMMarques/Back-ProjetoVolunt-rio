@@ -54,5 +54,25 @@ public class UsuarioService {
         }
         usuarioRepository.deleteById(id);
     }
+    public Usuario atualizarUsuario(Long id, Usuario usuarioAtualizado) {
+        Usuario usuarioExistente = usuarioRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado para o ID: " + id));
+    
+        usuarioAtualizado.setCpf(usuarioExistente.getCpf());
+        usuarioAtualizado.setDataNascimento(usuarioExistente.getDataNascimento());
+        usuarioAtualizado.setTipo(usuarioExistente.getTipo());
+    
+        usuarioExistente.setNome(usuarioAtualizado.getNome());
+        usuarioExistente.setEmail(usuarioAtualizado.getEmail());
+        usuarioExistente.setSenha(usuarioAtualizado.getSenha());
+        usuarioExistente.setCidade(usuarioAtualizado.getCidade());
+        usuarioExistente.setEstado(usuarioAtualizado.getEstado());
+        usuarioExistente.setNecessidade(usuarioAtualizado.getNecessidade());
+        usuarioExistente.setHabilidade(usuarioAtualizado.getHabilidade());
+        usuarioExistente.setProfissao(usuarioAtualizado.getProfissao());
+    
+        return usuarioRepository.save(usuarioExistente);
+    }
+    
     
 }
