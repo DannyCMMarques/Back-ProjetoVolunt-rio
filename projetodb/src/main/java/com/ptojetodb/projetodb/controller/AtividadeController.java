@@ -65,10 +65,9 @@ public class AtividadeController implements GenericController {
         return ResponseEntity.noContent().build();
     }
 
-    // TODO: Depois trocar por questao de privacidade do usuario e refatorar
-    @GetMapping("minhas-atividades/{id}")
-    public ResponseEntity<List<Atividade>> exibirMinhasAtividades(@PathVariable("id") long id) {
-        List<Atividade> atividade = service.exibirMinhasAtividades(id);
+    @GetMapping("minhas-atividades")
+    public ResponseEntity<List<Atividade>> exibirMinhasAtividades() {
+        List<Atividade> atividade = service.exibirMinhasAtividades();
         return ResponseEntity.ok(atividade);
     }
 

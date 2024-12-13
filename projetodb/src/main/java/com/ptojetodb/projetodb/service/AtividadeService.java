@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.ptojetodb.projetodb.exceptions.AtividadeNotFoundException;
 import com.ptojetodb.projetodb.model.Atividade;
 import com.ptojetodb.projetodb.repository.AtividadeRepository;
+import com.ptojetodb.projetodb.security.UserService;
 import com.ptojetodb.projetodb.validator.AtividadeValidator;
 
 import jakarta.transaction.Transactional;
@@ -18,6 +19,7 @@ public class AtividadeService {
 
     private final AtividadeRepository repository;
     private final AtividadeValidator atividadeValidator;
+    private final UserService userService;
 
     @Transactional
     public Atividade salvarAtividade(Atividade atividade) {
@@ -43,8 +45,9 @@ public class AtividadeService {
         repository.delete(atividade);
     }
 
-    public List<Atividade> exibirMinhasAtividades(Long id) {
-        return repository.filterByUsuarioCriadorOrUsuarioConvidado(id);
+    public List<Atividade> exibirMinhasAtividades() {
+        Long userId = userService.getAuthenticatedUserId();
+        return repository.filterByUsuarioCriadorOrUsuarioConvidado(userId);
     }
 
     @Transactional
