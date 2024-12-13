@@ -1,6 +1,7 @@
 package com.ptojetodb.projetodb.security;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,41 +16,40 @@ public class CustomUserDetails implements UserDetails {
     private final Usuario usuario;
 
     public Long getIdUsuario() {
-        return usuario.getIdUsuario(); // Retorna o ID do usuário
+        return usuario.getIdUsuario();
     }
 
-    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
     public String getPassword() {
-        return usuario.getSenha(); // Retorna a senha do usuário
+        return usuario.getSenha();
     }
 
     @Override
     public String getUsername() {
-        return usuario.getEmail(); // Retorna o email como username
+        return usuario.getEmail();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true; // Customize conforme sua lógica
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true; // Customize conforme sua lógica
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true; // Customize conforme sua lógica
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return true; // Customize conforme sua lógica
+        return true;
     }
 }
