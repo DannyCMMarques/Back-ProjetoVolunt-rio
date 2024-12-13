@@ -2,6 +2,10 @@ package com.ptojetodb.projetodb.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,15 +48,16 @@ public class UsuarioController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<UsuarioDTO>> listarPorTipo(@RequestParam TipoUsuario tipo) {
-        List<Usuario> usuarios = usuarioService.listarUsuariosPorTipo(tipo);
-        
-        List<UsuarioDTO> usuariosDto = usuarios.stream()
-                .map(usuario -> usuarioMapper.toDTO(usuario)) 
-                .toList();
+    public ResponseEntity<Page<UsuarioDTO>> listarPorTipo(
+            @RequestParam TipoUsuario tipo,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
 
+        Page<Usuario> usuarios = usuarioService.listarUsuariosPorTipo(tipo, PageRequest.of(page, size));
+        Page<UsuarioDTO> usuariosDto = usuarios.map(usuarioMapper::toDTO);
         return ResponseEntity.ok(usuariosDto);
     }
+    
 
     @GetMapping("{id}")
     public ResponseEntity<Usuario> exibirPorID(@PathVariable Long id){
