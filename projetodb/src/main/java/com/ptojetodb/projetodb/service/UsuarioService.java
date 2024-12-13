@@ -6,6 +6,10 @@ import com.ptojetodb.projetodb.repository.UsuarioRepository;
 import com.ptojetodb.projetodb.validator.UsuarioValidator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,8 +43,8 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
-    public List<Usuario> listarUsuariosPorTipo(TipoUsuario tipo){
-        return usuarioRepository.filterByTipoUsuario(tipo);
+    public Page<Usuario> listarUsuariosPorTipo(TipoUsuario tipo, Pageable pageable) {
+        return usuarioRepository.filterByTipoUsuario(tipo, pageable);
     }
 
     public Usuario exibirPorID(Long id) {
