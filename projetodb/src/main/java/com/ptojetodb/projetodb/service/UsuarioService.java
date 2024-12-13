@@ -1,15 +1,14 @@
 package com.ptojetodb.projetodb.service;
 
-import com.ptojetodb.projetodb.model.TipoUsuario;
-import com.ptojetodb.projetodb.model.Usuario;
-import com.ptojetodb.projetodb.repository.UsuarioRepository;
-import com.ptojetodb.projetodb.validator.UsuarioValidator;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.ptojetodb.projetodb.model.TipoUsuario;
+import com.ptojetodb.projetodb.model.Usuario;
+import com.ptojetodb.projetodb.repository.UsuarioRepository;
+import com.ptojetodb.projetodb.validator.UsuarioValidator;
 
 @Service
 public class UsuarioService {
@@ -39,7 +38,7 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
-    public List<Usuario> listarUsuariosPorTipo(TipoUsuario tipo){
+    public List<Usuario> listarUsuariosPorTipo(TipoUsuario tipo) {
         return usuarioRepository.filterByTipoUsuario(tipo);
     }
 
@@ -47,21 +46,22 @@ public class UsuarioService {
         return usuarioRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado para o ID: " + id));
     }
-    
+
     public void deletarUsuario(Long id) {
         if (!usuarioRepository.existsById(id)) {
             throw new IllegalArgumentException("Usuário não encontrado para o ID: " + id);
         }
         usuarioRepository.deleteById(id);
     }
+
     public Usuario atualizarUsuario(Long id, Usuario usuarioAtualizado) {
         Usuario usuarioExistente = usuarioRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado para o ID: " + id));
-    
+
         usuarioAtualizado.setCpf(usuarioExistente.getCpf());
         usuarioAtualizado.setDataNascimento(usuarioExistente.getDataNascimento());
         usuarioAtualizado.setTipo(usuarioExistente.getTipo());
-    
+
         usuarioExistente.setNome(usuarioAtualizado.getNome());
         usuarioExistente.setEmail(usuarioAtualizado.getEmail());
         usuarioExistente.setSenha(usuarioAtualizado.getSenha());
@@ -70,9 +70,8 @@ public class UsuarioService {
         usuarioExistente.setNecessidade(usuarioAtualizado.getNecessidade());
         usuarioExistente.setHabilidade(usuarioAtualizado.getHabilidade());
         usuarioExistente.setProfissao(usuarioAtualizado.getProfissao());
-    
+
         return usuarioRepository.save(usuarioExistente);
     }
-    
-    
+
 }

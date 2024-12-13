@@ -1,10 +1,10 @@
 package com.ptojetodb.projetodb.model;
 
-
 public enum HabilidadeVoluntario {
     PROFISSIONAL("Profissional"),
     NAO_PROFISSIONAL("Não Profissional"),
-    AMBOS("Ambos");
+    AMBOS("Ambos"),
+    NENHUMA("Nenhuma");
 
     private final String categoria;
 
@@ -16,4 +16,3 @@ public enum HabilidadeVoluntario {
         return categoria;
     }
 }
-
