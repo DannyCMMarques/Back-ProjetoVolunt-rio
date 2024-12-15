@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AtividadeDTO {
-    private Long idAtividade;
+    private Long id_atividade;
     private String nomeAtividade;
     private String descricaoAtividade;
     private LocalDate dataEncontro;
