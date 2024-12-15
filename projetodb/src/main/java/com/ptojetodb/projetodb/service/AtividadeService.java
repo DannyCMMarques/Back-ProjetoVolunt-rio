@@ -1,12 +1,17 @@
 package com.ptojetodb.projetodb.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.ptojetodb.projetodb.controller.dto.AtividadeDTO;
+import com.ptojetodb.projetodb.controller.mappers.AtividadeMapper;
 import com.ptojetodb.projetodb.exceptions.AtividadeNotFoundException;
 import com.ptojetodb.projetodb.model.Atividade;
+import com.ptojetodb.projetodb.model.Usuario;
 import com.ptojetodb.projetodb.repository.AtividadeRepository;
+import com.ptojetodb.projetodb.repository.UsuarioRepository;
 import com.ptojetodb.projetodb.security.UserService;
 import com.ptojetodb.projetodb.validator.AtividadeValidator;
 
@@ -20,16 +25,20 @@ public class AtividadeService {
     private final AtividadeRepository repository;
     private final AtividadeValidator atividadeValidator;
     private final UserService userService;
+    private final UsuarioRepository usuarioRepository;
+    private final AtividadeMapper mapper;
 
     @Transactional
-    public Atividade salvarAtividade(Atividade atividade) {
-        atividadeValidator.validar(atividade);
-        // TODO: é necessário ainda construir essa parte para que meu usuario criador
-        // sempre seja quem ta conectado
-        // Usuario usuario = securityService.obterUsuarioLogado();
-        // atividade.setUsuarioCriador(usuario);
-        return repository.save(atividade);
+    public Atividade criarAtividade(Atividade atividade, Long idUsuarioCriador, Long idUsuarioConvidado) {
+        Usuario usuarioCriador = usuarioRepository.findById(idUsuarioCriador)
+                .orElseThrow(() -> new RuntimeException("Usuário criador não encontrado: " + idUsuarioCriador));
 
+        Usuario usuarioConvidado = usuarioRepository.findById(idUsuarioConvidado)
+                .orElseThrow(() -> new RuntimeException("Usuário convidado não encontrado: " + idUsuarioConvidado));
+
+        atividade.setUsuarioCriador(usuarioCriador);
+        atividade.setUsuarioConvidado(usuarioConvidado);
+        return repository.save(atividade);
     }
 
     public Atividade obterAtividadeId(Long id) {
@@ -45,9 +54,11 @@ public class AtividadeService {
         repository.delete(atividade);
     }
 
-    public List<Atividade> exibirMinhasAtividades() {
-        Long userId = userService.getAuthenticatedUserId();
-        return repository.filterByUsuarioCriadorOrUsuarioConvidado(userId);
+    public List<AtividadeDTO> exibirMinhasAtividades(Long id) {
+        List<Atividade> atividades = repository.filterByUsuarioCriadorOrUsuarioConvidado(id);
+        return atividades.stream()
+                .map(mapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -61,19 +72,10 @@ public class AtividadeService {
         repository.save(atividade);
     }
 
-    public List<Atividade> exibirAtividadesPendentes(long id) {
-        return repository.filterByAtividadePendente(id);
-    }
-
-    public List<Atividade> exibirAtividadesRejeitadas(long id) {
-        return repository.filterByAtividadeRejeitada(id);
-    }
-
-    public List<Atividade> exibirAtividadesConfirmadas(long id) {
-        return repository.filterByAtividadeconfirmada(id);
-    }
-
-    public List<Atividade> exibirAtividadesFinalizadas(long id) {
-        return repository.filterByAtividadeFinalizada(id);
+    public List<AtividadeDTO> exibirAtividades(Long id, Boolean confirmada, Boolean rejeitada, Boolean finalizada) {
+        List<Atividade> atividades = repository.filterByAtividades(id, confirmada, rejeitada, finalizada);
+        return atividades.stream()
+                .map(mapper::toDTO)
+                .collect(Collectors.toList());
     }
 }

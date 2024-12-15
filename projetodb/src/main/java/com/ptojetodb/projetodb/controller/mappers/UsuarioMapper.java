@@ -9,6 +9,6 @@ import com.ptojetodb.projetodb.model.Usuario;
 public interface UsuarioMapper {
 
     Usuario toEntity(UsuarioDTO dto);
-    
+
     UsuarioDTO toDTO(Usuario usuario);
 }

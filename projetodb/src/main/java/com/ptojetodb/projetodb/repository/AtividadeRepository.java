@@ -12,22 +12,23 @@ import com.ptojetodb.projetodb.model.Atividade;
 
 public interface AtividadeRepository extends JpaRepository<Atividade, Long> {
 
-    // para usar para validação
-    boolean existsByDataEncontroAndHorario(LocalDate dataEncontro, LocalTime horario);
+        boolean existsByDataEncontroAndHorario(LocalDate dataEncontro, LocalTime horario);
 
-    @Query("SELECT a FROM Atividade a WHERE a.usuarioCriador.id = :id OR a.usuarioConvidado.id = :id")
-    List<Atividade> filterByUsuarioCriadorOrUsuarioConvidado(@Param("id") Long id);
+        @Query("SELECT a FROM Atividade a WHERE a.usuarioCriador.idUsuario = :id OR a.usuarioConvidado.idUsuario = :id")
+        List<Atividade> filterByUsuarioCriadorOrUsuarioConvidado(@Param("id") Long id);
 
-    @Query("SELECT a FROM Atividade a WHERE (a.usuarioCriador.id = :id OR a.usuarioConvidado.id = :id) AND a.confirmada = false AND a.rejeitada = false")
-    List<Atividade> filterByAtividadePendente(@Param("id") Long id);
-
-    @Query("SELECT a FROM Atividade a WHERE (a.usuarioCriador.id = :id OR a.usuarioConvidado.id = :id) AND a.confirmada = false AND a.rejeitada = true")
-    List<Atividade> filterByAtividadeRejeitada(@Param("id") Long id);
-
-    @Query("SELECT a FROM Atividade a WHERE (a.usuarioCriador.id = :id OR a.usuarioConvidado.id = :id) AND a.confirmada = true ")
-    List<Atividade> filterByAtividadeconfirmada(@Param("id") Long id);
-
-    @Query("SELECT a FROM Atividade a WHERE (a.usuarioCriador.id = :id OR a.usuarioConvidado.id = :id) AND a.finalizada = true ")
-    List<Atividade> filterByAtividadeFinalizada(@Param("id") Long id);
+        @Query("""
+                            SELECT a
+                            FROM Atividade a
+                            WHERE (a.usuarioCriador.idUsuario = :id OR a.usuarioConvidado.idUsuario = :id)
+                              AND (:confirmada IS NULL OR a.confirmada = :confirmada)
+                              AND (:rejeitada IS NULL OR a.rejeitada = :rejeitada)
+                              AND (:finalizada IS NULL OR a.finalizada = :finalizada)
+                        """)
+        List<Atividade> filterByAtividades(
+                        @Param("id") Long id,
+                        @Param("confirmada") Boolean confirmada,
+                        @Param("rejeitada") Boolean rejeitada,
+                        @Param("finalizada") Boolean finalizada);
 
 }

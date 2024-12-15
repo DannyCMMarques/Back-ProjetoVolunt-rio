@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ptojetodb.projetodb.controller.dto.AtividadeDTO;
 import com.ptojetodb.projetodb.model.Atividade;
 import com.ptojetodb.projetodb.service.AtividadeService;
 
@@ -30,9 +32,20 @@ public class AtividadeController implements GenericController {
 
     @PostMapping
     public ResponseEntity<Atividade> salvar(@RequestBody @Valid Atividade atividade) {
-        log.info("Cadastrado nova atividade:{}", atividade.getNomeAtividade());
-        service.salvarAtividade(atividade);
-        URI location = gerarHeaderLocation(atividade.getId_atividade());
+
+        if (atividade.getUsuarioCriador() == null || atividade.getUsuarioCriador().getIdUsuario() == null) {
+            throw new IllegalArgumentException("Usuário criador é obrigatório.");
+        }
+        if (atividade.getUsuarioConvidado() == null || atividade.getUsuarioConvidado().getIdUsuario() == null) {
+            throw new IllegalArgumentException("Usuário convidado é obrigatório.");
+        }
+
+        Long idUsuarioCriador = atividade.getUsuarioCriador().getIdUsuario();
+        Long idUsuarioConvidado = atividade.getUsuarioConvidado().getIdUsuario();
+
+        Atividade novaAtividade = service.criarAtividade(atividade, idUsuarioCriador, idUsuarioConvidado);
+
+        URI location = gerarHeaderLocation(novaAtividade.getId_atividade());
         return ResponseEntity.created(location).build();
     }
 
@@ -60,39 +73,18 @@ public class AtividadeController implements GenericController {
         atividade.setEndereco(atividade.getEndereco());
         atividade.setUsuarioConvidado(atividade.getUsuarioConvidado());
         atividade.setNomeAtividade(atividade.getNomeAtividade());
-        // atividade.getHorario(atividade.getHorario());
         service.atualizarAtividade(atividade);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("minhas-atividades")
-    public ResponseEntity<List<Atividade>> exibirMinhasAtividades() {
-        List<Atividade> atividade = service.exibirMinhasAtividades();
-        return ResponseEntity.ok(atividade);
-    }
-
-    @GetMapping("pendentes/{id}")
-    public ResponseEntity<List<Atividade>> exibirAtividadesPendentes(@PathVariable("id") long id) {
-        List<Atividade> atividade = service.exibirAtividadesPendentes(id);
-        return ResponseEntity.ok(atividade);
-    }
-
-    @GetMapping("rejeitadas/{id}")
-    public ResponseEntity<List<Atividade>> exibirAtividadesRejeitadas(@PathVariable("id") long id) {
-        List<Atividade> atividade = service.exibirAtividadesRejeitadas(id);
-        return ResponseEntity.ok(atividade);
-    }
-
-    @GetMapping("confirmadas/{id}")
-    public ResponseEntity<List<Atividade>> exibirAtividadesConfirmadas(@PathVariable("id") long id) {
-        List<Atividade> atividade = service.exibirAtividadesConfirmadas(id);
-        return ResponseEntity.ok(atividade);
-    }
-
-    @GetMapping("finalizadas/{id}")
-    public ResponseEntity<List<Atividade>> exibirAtividadesFinalizadas(@PathVariable("id") long id) {
-        List<Atividade> atividade = service.exibirAtividadesFinalizadas(id);
-        return ResponseEntity.ok(atividade);
+    @GetMapping("/minhas-atividades/{id}")
+    public ResponseEntity<List<AtividadeDTO>> exibirAtividades(
+            @PathVariable Long id,
+            @RequestParam(required = false) Boolean confirmada,
+            @RequestParam(required = false) Boolean rejeitada,
+            @RequestParam(required = false) Boolean finalizada) {
+        List<AtividadeDTO> atividades = service.exibirAtividades(id, confirmada, rejeitada, finalizada);
+        return ResponseEntity.ok(atividades);
     }
 
 }
