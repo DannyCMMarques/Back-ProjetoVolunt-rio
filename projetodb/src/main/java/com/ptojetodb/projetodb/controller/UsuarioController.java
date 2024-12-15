@@ -61,7 +61,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario);
     }
 
-    @GetMapping
+    @GetMapping("/listaUsuario")
     public ResponseEntity<Usuario> exibirUsuario() {
         Optional<Usuario> optionalUsuario = usuarioService.exibirUsuarioConectado();
         if (optionalUsuario.isPresent()) {

@@ -3,6 +3,8 @@ package com.ptojetodb.projetodb.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final UsuarioValidator usuarioValidator;
     private final UserService userService;
+    private static final Logger logger = LoggerFactory.getLogger(UsuarioService.class);
 
     public Usuario salvarUsuario(Usuario usuario) {
         usuarioValidator.validarUsuario(usuario);
@@ -42,12 +45,17 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
+    public Optional<Usuario> findById(Long idUsuario) {
+        return usuarioRepository.findById(idUsuario);
+    }
+
     public Page<Usuario> listarUsuariosPorTipo(TipoUsuario tipo, Pageable pageable) {
         return usuarioRepository.filterByTipoUsuario(tipo, pageable);
     }
 
     public Optional<Usuario> exibirUsuarioConectado() {
         Long userId = userService.getAuthenticatedUserId();
+        logger.info("Buscando usuário conectado com ID: {}", userId);
         return usuarioRepository.findById(userId);
     }
 
