@@ -58,8 +58,12 @@ public class UsuarioController {
     @GetMapping("{id}")
     public ResponseEntity<Usuario> exibirPorID(@PathVariable Long id) {
         Usuario usuario = usuarioService.exibirPorID(id);
-        return ResponseEntity.ok(usuario);
+        if (usuario == null) {
+            return ResponseEntity.notFound().build();  
+        }
+        return ResponseEntity.ok(usuario);  
     }
+    
 
     @GetMapping("/listaUsuario")
     public ResponseEntity<Usuario> exibirUsuario() {
