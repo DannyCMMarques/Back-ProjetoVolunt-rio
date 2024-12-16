@@ -18,6 +18,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     @Query("SELECT u FROM Usuario u WHERE u.email = :email")
     Optional<Usuario> findByEmail(@Param("email") String email);
 
+    @Query("SELECT u FROM Usuario u WHERE u.cidade = :cidade")
+    Page<Usuario> filterByCidade(@Param("cidade") String cidade, Pageable pageable);
+
     public boolean existsByCpf(String cpf);
 
     public boolean existsByEmail(String email);

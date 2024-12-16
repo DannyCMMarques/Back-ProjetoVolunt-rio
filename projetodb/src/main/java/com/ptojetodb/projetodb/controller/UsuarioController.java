@@ -91,4 +91,16 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario);
     }
 
+    @GetMapping(params = "cidade")
+    public ResponseEntity<Page<UsuarioDTO>> listarPorCidade(
+            @RequestParam String cidade,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+    
+        Page<Usuario> usuarios = usuarioService.listarUsuariosPorCidade(cidade, PageRequest.of(page, size));
+        Page<UsuarioDTO> usuariosDto = usuarios.map(usuarioMapper::toDTO);
+        return ResponseEntity.ok(usuariosDto);
+    }
+
+
 }

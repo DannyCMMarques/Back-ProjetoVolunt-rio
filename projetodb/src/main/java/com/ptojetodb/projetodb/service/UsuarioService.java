@@ -91,4 +91,9 @@ public class UsuarioService {
         return usuarioRepository.save(usuarioExistente);
     }
 
+    public Page<Usuario> listarUsuariosPorCidade(String cidade, Pageable pageable) {
+        return usuarioRepository.filterByCidade(cidade, pageable);
+    }
+    
+
 }

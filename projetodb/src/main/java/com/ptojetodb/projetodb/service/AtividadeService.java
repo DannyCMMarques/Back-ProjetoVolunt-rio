@@ -3,6 +3,7 @@ package com.ptojetodb.projetodb.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.ptojetodb.projetodb.controller.dto.AtividadeDTO;
@@ -14,6 +15,8 @@ import com.ptojetodb.projetodb.repository.AtividadeRepository;
 import com.ptojetodb.projetodb.repository.UsuarioRepository;
 import com.ptojetodb.projetodb.security.UserService;
 import com.ptojetodb.projetodb.validator.AtividadeValidator;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -54,11 +57,9 @@ public class AtividadeService {
         repository.delete(atividade);
     }
 
-    public List<AtividadeDTO> exibirMinhasAtividades(Long id) {
-        List<Atividade> atividades = repository.filterByUsuarioCriadorOrUsuarioConvidado(id);
-        return atividades.stream()
-                .map(mapper::toDTO)
-                .collect(Collectors.toList());
+    public Page<AtividadeDTO> exibirMinhasAtividades(Long id, int page, int size) {
+    Page<Atividade> atividades = repository.filterByUsuarioCriadorOrUsuarioConvidado(id, PageRequest.of(page, size));
+    return atividades.map(mapper::toDTO);
     }
 
     @Transactional
@@ -72,10 +73,8 @@ public class AtividadeService {
         repository.save(atividade);
     }
 
-    public List<AtividadeDTO> exibirAtividades(Long id, Boolean confirmada, Boolean rejeitada, Boolean finalizada) {
-        List<Atividade> atividades = repository.filterByAtividades(id, confirmada, rejeitada, finalizada);
-        return atividades.stream()
-                .map(mapper::toDTO)
-                .collect(Collectors.toList());
+    public Page<AtividadeDTO> exibirAtividades(Long id, Boolean confirmada, Boolean rejeitada, Boolean finalizada, int page, int size) {
+        Page<Atividade> atividades = repository.filterByAtividades(id, confirmada, rejeitada, finalizada, PageRequest.of(page, size));
+        return atividades.map(mapper::toDTO); 
     }
 }
