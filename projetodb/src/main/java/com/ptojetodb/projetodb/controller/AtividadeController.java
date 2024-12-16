@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
 
 import com.ptojetodb.projetodb.controller.dto.AtividadeDTO;
 import com.ptojetodb.projetodb.model.Atividade;
@@ -78,13 +79,17 @@ public class AtividadeController implements GenericController {
     }
 
     @GetMapping("/minhas-atividades/{id}")
-    public ResponseEntity<List<AtividadeDTO>> exibirAtividades(
+    public ResponseEntity<Page<AtividadeDTO>> exibirAtividades(
             @PathVariable Long id,
             @RequestParam(required = false) Boolean confirmada,
             @RequestParam(required = false) Boolean rejeitada,
-            @RequestParam(required = false) Boolean finalizada) {
-        List<AtividadeDTO> atividades = service.exibirAtividades(id, confirmada, rejeitada, finalizada);
+            @RequestParam(required = false) Boolean finalizada,
+            @RequestParam(defaultValue = "0") int page, 
+            @RequestParam(defaultValue = "10") int size 
+    ) {
+        Page<AtividadeDTO> atividades = service.exibirAtividades(id, confirmada, rejeitada, finalizada, page, size);
         return ResponseEntity.ok(atividades);
     }
+    
 
 }
